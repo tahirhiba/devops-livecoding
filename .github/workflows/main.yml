@@ -2,10 +2,10 @@ name: CI devops 2023
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -25,4 +25,32 @@ jobs:
         working-directory: ./simple-api
         run: mvn clean verify
 
-          
+  build-and-push-docker-image:
+    needs: test-backend
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+
+      - name: Build image and push database
+        # Faire de même pour la base de données
+
+      - name: Build image and push httpd
+        # Faire de même pour httpd
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ hibatahir}} -p ${{ Lamia2502 }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api
+          tags: ${{ devops}}/tp-devops-simple-api:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
