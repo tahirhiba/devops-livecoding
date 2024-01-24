@@ -20,7 +20,7 @@ jobs:
                 distribution: 'adopt'
       
             - name: Change to project directory
-              working-diretory: simple-api
+              working-diretory: ./simple-api
               run : mvn clean verify
               
       
