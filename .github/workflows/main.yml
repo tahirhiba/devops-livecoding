@@ -19,7 +19,7 @@ jobs:
           distribution: "temurin"
       - name: Build with Maven
         working-directory: ./simple-api
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2023 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN }}  --file ./pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=tahirhiba_devops-livecoding -Dsonar.organization=hibatahir -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN }}  --file ./pom.xml
   build-and-push-backend-image:
     needs: build
     runs-on: ubuntu-22.04
