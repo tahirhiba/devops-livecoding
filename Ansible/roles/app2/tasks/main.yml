@@ -1,0 +1,18 @@
+#- name: Run HTTPD
+  #docker_container:
+    #name: my_app
+    #image: hibatahir/tp-devops-simple-api
+    #state: started
+    #networks:
+    #- name: my-network
+
+
+# Build the image using docker_image module
+- name: Pull and run the backend application container
+  community.general.docker_container:
+    name: my-api
+    image: "hibatahir/tp-devops-simple-api"
+    state: started
+    recreate: true
+    networks:
+      - name: my-network

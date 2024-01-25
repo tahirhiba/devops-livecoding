@@ -1,0 +1,23 @@
+
+# tasks file for roles/databas
+# -  name: Lancer la base de données PostgreSQL
+  # docker_container:
+    # name: ma-base-de-donnees
+    # image: hibatahir/tp-devops-database
+   #  state: started
+   
+
+  
+---
+- name: Launch database container
+  docker_container:
+    name: my-db
+    image: "hibatahir/tp-devops-database"
+    networks:
+      - name: my-network
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    state: started
+    recreate: true
+ 
+   

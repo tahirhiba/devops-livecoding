@@ -1,0 +1,6 @@
+[submodule "Ansible/Ansible/devops-front"]
+	path = Ansible/Ansible/devops-front
+	url = https://github.com/tahirhiba/devops-livecoding.git
+[submodule "Ansible/Ansible/Ansible/devops-front"]
+	path = Ansible/Ansible/Ansible/devops-front
+	url = https://github.com/takima-training/devops-front.git

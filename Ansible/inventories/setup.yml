@@ -1,0 +1,7 @@
+all:
+  vars:
+    ansible_user: centos
+    ansible_ssh_private_key_file: /Users/lamia/Documents/id_rsa
+  children:
+    prod:
+      hosts: hiba.tahir.takima.cloud

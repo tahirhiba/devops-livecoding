@@ -1,0 +1,22 @@
+# tasks file for roles/proxy
+#- name: Run HTTPD
+  #docker_container:
+    #name: httpd
+    #image: hibatahir/tp-devops-httpd
+    #state: started
+    #networks:
+     # - name: my-network
+    
+
+
+- name: Run the HTTP server container
+  community.general.docker_container:
+    name: httpd
+    image: "hibatahir/tp-devops-httpd"
+    state: started
+    recreate: true
+    ports:
+      - "80:80"
+    networks_cli_compatible: yes
+    networks:
+      - name: my-network
