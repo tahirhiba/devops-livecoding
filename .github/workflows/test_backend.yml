@@ -1,11 +1,13 @@
-name: CI devops 2023
+name: Test Backend
 'on':
   push:
     branches:
+      - develop
       - main
   pull_request:
     branches:
       - main
+      - develop
 jobs:
   build:
     runs-on: ubuntu-latest
