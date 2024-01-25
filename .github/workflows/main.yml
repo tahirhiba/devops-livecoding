@@ -25,19 +25,24 @@ jobs:
         working-directory: ./simple-api
         run: mvn clean verify
 
+  # Assuming you want a separate job for building and pushing Docker images
   build-and-push-docker-image:
-    needs: build  # Assurez-vous que ce nom correspond au nom du job précédent si différent de 'build'
+    needs: build # This ensures that the Docker build only happens after the build job succeeds
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.5.0
 
       - name: Login to DockerHub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-      - name: Build image and push
+      # Build and push backend image
+      - name: Build image and push backend
         uses: docker/build-push-action@v3
         with:
           context: ./simple-api
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: true
+
+      # Add steps for building and pushing database and httpd images here
+      # Make sure to provide the correct context and tags for those images
