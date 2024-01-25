@@ -1,0 +1,52 @@
+name: Build and Push Docker Images
+
+on:
+  workflow_run:
+    workflows: ["Test Backend"]
+    branches: [master]
+    types:
+      - completed
+
+jobs:
+build-and-push-backend-image:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+      - name: Login to DockerHub
+        run:  docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api
+          tags: '${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-backend:latest'
+          push: true
+  build-and-push-database-image:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+      - name: Login to DockerHub
+        run:  docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image and push database
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api
+          tags: '${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest'
+          push: true
+  build-and-push-httpd-image:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+      - name: Login to DockerHub
+        run:  docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api
+          tags: '${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest'
+          push: true
