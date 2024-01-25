@@ -25,9 +25,8 @@ jobs:
         working-directory: ./simple-api
         run: mvn clean verify
 
-  # Assuming you want a separate job for building and pushing Docker images
-  build-and-push-docker-image:
-    needs: build # This ensures that the Docker build only happens after the build job succeeds
+  build-and-push-backend-image:
+    needs: build
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -36,13 +35,43 @@ jobs:
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-      # Build and push backend image
       - name: Build image and push backend
         uses: docker/build-push-action@v3
         with:
-          context: ./simple-api
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+          context: ./simple-api/backend
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-backend:latest
           push: true
 
-      # Add steps for building and pushing database and httpd images here
-      # Make sure to provide the correct context and tags for those images
+  build-and-push-database-image:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build image and push database
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api/database
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
+          push: true
+
+  build-and-push-httpd-image:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          context: ./simple-api/httpd
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest
+          push: true
