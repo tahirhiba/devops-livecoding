@@ -52,5 +52,5 @@ on:
               with:
                 context: ./simple-api
                 tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest
-                push: true
+                push: true 
       
